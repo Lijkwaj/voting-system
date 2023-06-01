@@ -110,7 +110,7 @@ class EggTrackingContract extends Contract {
       throw new Error(`Election with key ${key} already exists`);
     }
 
-    await ctx.stub.putState(key, election.serialise())
+    await ctx.stub.putState(electionId, election.serialise())
 
     const event = {
       eventName: 'createdElection',
@@ -123,16 +123,20 @@ class EggTrackingContract extends Contract {
     return JSON.stringify(election);
   }
 
-  async voteForParticipant() {
-
+  async voteForParticipant(ctx, electionId) {
+    const electionParticipants = await this.getParticipants(ctx, electionId);
+    
   }
 
-  async getParticpants(electionId) {
+  async getParticpants(ctx, electionId) {
+    const election = await this.getElection(ctx, electionId);
 
+    const electionParticipants = election.getElectionParticipants()
+    return electionParticipants
   }
 
-  async startElection(ctx, electionId) {
-
+  async getElection(ctx, electionId) {
+    console.log('test', electionId)
     let identity = ctx.clientIdentity;
 
     if (!this.isElectionCreator(identity) && !this.isAdmin(identity)) {
@@ -149,12 +153,18 @@ class EggTrackingContract extends Contract {
 
     const election = Election.deserialise(buffer);
 
+    return election
+  }
+
+
+  async startElection(ctx, electionId) {
+    const election = await this.getElection(electionId)
     if (!election.isNotStarted) {
       throw new Error(`Election with ID ${electionId} has either already started or is finished`)
     }
 
     election.setRunning()
-    await ctx.stub.putState(election, election.serialise());
+    await ctx.stub.putState(electionId, election.serialise());
 
     return "election has been started"
 

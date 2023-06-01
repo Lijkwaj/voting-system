@@ -171,14 +171,33 @@ app.post('/rest/createElection', async (req, res) => {
  * 
  * {"electionCreatorId": "C1", "ElectionId": "E1" (param)}
  */
-app.post('/rest/:electionId/start', async (req, res) => {
+app.post('/rest/start', async (req, res) => {
+    console.log(req.body.electionId)
     let networkObj = await network.connectToNetwork(req.body.electionCreatorId);
-    console.log(networkObj)
+    if (networkObj.error) {
+        res.status(400).json({ message: networkObj.error });
+    }
+    console.log('test')
+
+    let invokeResponse = await network.startElection(networkObj, req.body.electionId);
+    if (invokeResponse.error) {
+        res.status(400).json({ message: invokeResponse.error });
+    } else {
+        res.setHeader('Content-Type', 'application/json');
+        res.status(201).send(invokeResponse);
+    }
+})
+
+/**
+ * {"electionCreatorId": "C1", "electionId": "E1"}
+ */
+app.get('/rest/getElection', async (req, res) => {
+    let networkObj = await network.connectToNetwork(req.body.electionCreatorId);
     if (networkObj.error) {
         res.status(400).json({ message: networkObj.error });
     }
 
-    let invokeResponse = await network.startElection(networkObj, req.params.electionId);
+    let invokeResponse = await network.getElection(networkObj, req.body.electionId);
     if (invokeResponse.error) {
         res.status(400).json({ message: invokeResponse.error });
     } else {
