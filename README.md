@@ -1,4 +1,4 @@
-##  HvA Blockchain Architecture :: Practicum Week 5
+##  HvA Blockchain Architecture :: Voting System
 
 This project aims at discussing how a blockchain application can integrate with external systems. It also explores the consequences of making external calls, which force these external services to be deterministic.
 
@@ -36,9 +36,8 @@ Alternatively, you can use a ready-to-use Linux Virtual Machine running on Virtu
 
 ## The Use Case
 
-The proposed use case is based on a simplified supply-chain process. An association of farmers, shippers and food distributors decided to optimise their businesses, creating a consortium. The consortium uses a private permissioned blockchain network to do their business.
+The proposed use case is based on a voting system process. An association of voters, candidates and election officials decided to optimise the voting system. The consortium uses a private permissioned blockchain network to do the voting system.
 
-To know more, you can go to the [use case section of the previous workshop](https://gitlab.fdmci.hva.nl/mfknr/bc-arch-week-3#the-use-case)
 
 ### A change in the workflow
 
@@ -82,7 +81,7 @@ The result of the call looks like this:
 To get started, you should first clone this project into your local computer:
 
 ```
-git clone https://gitlab.fdmci.hva.nl/mfknr/bc2-arch-week-5.git
+git clone https://github.com/KortSam/voting-system.git
 ```
 
 You see a folder structure with these elements:
@@ -329,6 +328,3 @@ For example, the following endorsement policy is much more lenient, requiring th
 -ccep "OR('Org1MSP.peer','Org2MSP.peer')"
 ```
 
-### To know more
-
-1. Hyperledger Fabric 2.x Documentation: https://hyperledger-fabric.readthedocs.io/en/release-2.2/endorsement-policies.html#:~:text=Every%20chaincode%20has%20an%20endorsement,transaction%20to%20be%20considered%20valid.
